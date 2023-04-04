@@ -1,10 +1,31 @@
-
+import { useState, useEffect } from "react"
 
 
 export default function PokeCard ({id,name,img,types,infoPokemon,pk}){
+
+	const [cardMobile, setMobileCard] = useState("card-pokemon")
+
+	useEffect(() => {
+		const handleResize = () => {
+		  if (window.innerWidth < 550) {
+			setMobileCard("cardMobile");
+		  } else {
+			setMobileCard("card-pokemon");
+		  }
+		};
+		window.addEventListener("resize", handleResize);
+		handleResize();
+		
+		
+		return () => {
+		  window.removeEventListener("resize", handleResize);
+		};
+		
+	  }, []);
+
     return (
             <button
-				className="card-pokemon" 
+				className={`${cardMobile}`}
                 key={id} 
                 onClick={()=>infoPokemon(pk)}
 			>

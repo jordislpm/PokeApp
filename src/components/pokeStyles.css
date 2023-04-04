@@ -67,10 +67,11 @@ body{
     width: 100%;
 
 }
-
+/* pokemonList */
 .card-list-pokemon{
     position:relative;
     display: grid;
+    padding: 2rem;
     grid-template-columns: repeat(
         auto-fit,
         minmax(250px, 1fr)
@@ -97,13 +98,26 @@ body{
    
 }
 
+.PokeList-Mobile{
+    display: flex;  
+    padding: 0rem 3rem 0rem 3rem;
+    flex-direction: column;
+}
+/* pokemonList */
 
+.cardMobile{
+    text-align: center;
+    background-color:var(--poke-blue);
+    color: var(--poke-yellow);
+    min-width: 100%;
+    height: 15rem;
+    border-radius: 11px; 
+}
 .card-pokemon{
     text-align: center;
     background-color:var(--poke-blue);
     color: var(--poke-yellow);
     max-width: 250px;
-    margin: 15px;
     border-radius: 11px;
 }
 

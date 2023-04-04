@@ -6,9 +6,29 @@ import PokeButton from "./PokeButton"
 
 
 export default function PokemonList({cardListStyle, busqueda, setPokemonData, pokemonData, loading, infoPokemon, setUrl, nextUrl, prevUrl}) {
+    
+    const [listMobile, setListMobile] = useState("PokeList")
+
+    useEffect(() => {
+		const handleResize = () => {
+		  if (window.innerWidth < 550) {
+			setListMobile("PokeList-Mobile");
+		  } else {
+			setListMobile("PokeList");
+		  }
+		};
+		window.addEventListener("resize", handleResize);
+		handleResize();
+		
+		
+		return () => {
+		  window.removeEventListener("resize", handleResize);
+		};
+		
+	  }, []);
 
     return(
-        <div className={`PokeList ${cardListStyle}`}>
+        <div className={`${listMobile} ${cardListStyle}`}>
         {!busqueda && <PokeButton
             prevUrl={prevUrl}
             nextUrl={nextUrl}
