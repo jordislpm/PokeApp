@@ -1,11 +1,11 @@
 import { useState, useEffect} from "react"
-import PokeButton from "./PokeButton"
+import PokeButtonPage from "./PokeButtonPage"
 
 
 
 
-export default function PokemonPage ({data, setPokeDex,nextUrl,setUrl,prevUrl,setPokemonData}){
-    console.log(data)
+export default function PokemonPage ({data, setPokeDex,value,setValue}){
+    //console.log(data)
    
     return(
       
@@ -14,11 +14,9 @@ export default function PokemonPage ({data, setPokeDex,nextUrl,setUrl,prevUrl,se
             
             (!data) ? "" : (
             <>
-            <PokeButton
-            prevUrl={prevUrl}
-            nextUrl={nextUrl}
-            setPokemonData={setPokemonData}
-            setUrl={setUrl}
+            <PokeButtonPage
+            value={value}
+            setValue={setValue}
             />
             <main id="pokemonPage" className="container main-pokemon">
                 <button className="pokemon-page-button" onClick={setPokeDex}>

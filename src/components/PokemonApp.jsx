@@ -6,6 +6,7 @@ import axios from "axios";
 import PokemonPage from "./PokemonPage";
 import DontFind from "./DontFind";
 import Footer from "./Footer";
+import useGetPokemon from "../services/useGetPokemon.mjs";
 
 
 
@@ -14,6 +15,31 @@ import Footer from "./Footer";
 
 
 function PokemonApp(){
+    const [value, setValue] = useState(null)
+    const [uniquePokemon, setUniquePokemon]= useGetPokemon(value)
+
+    function getUniqueData(valor){
+         setValue(valor)
+        
+    }
+
+    function nextUniqueData(valor){
+        setValue(valor+1)
+       
+   }
+
+   function prevUniqueData(valor){
+    setValue(valor-1)
+   
+}
+
+
+
+    useEffect(()=>{
+        console.log(uniquePokemon)
+        setPokeDex(uniquePokemon)
+        
+    },[uniquePokemon])
 
     const [img, setImg] = useState([
         {
@@ -29,7 +55,8 @@ function PokemonApp(){
         const page20 = 20;
         const allpage= 905;
         const [cardListStyle, setCardListStyle] = useState(`card-list-normal`)
-       
+    
+      
     const[pokemonData, setPokemonData] = useState([]);
     const[pokeDex,setPokeDex]=useState();
     const[url,setUrl]= useState(`https://pokeapi.co/api/v2/pokemon?limit=${page20}&offset=0`)
@@ -180,8 +207,11 @@ function PokemonApp(){
         pokemonData={pokemonData} 
         cardListStyle={cardListStyle}
         loading={loading} 
-        infoPokemon={poke=>{setPokeDex(poke)
-            toggleModal()}} 
+        infoPokemon={poke=>{
+            //setPokeDex(poke)
+         toggleModal()
+         getUniqueData(poke.id)}
+        } 
         pokeDex={pokeDex}
         setUrl={setUrl}
         prevUrl={prevUrl}
@@ -196,6 +226,10 @@ function PokemonApp(){
             nextUrl={setPokeDex}
             setPokemonData={setPokemonData}
             setUrl={setUrl}
+            nextUniqueData={nextUniqueData}
+            prevUniqueData={prevUniqueData}
+            value={value}
+            setValue={setValue}
             />}
         <Footer/>
         </div>
