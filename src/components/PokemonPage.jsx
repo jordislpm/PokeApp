@@ -63,7 +63,7 @@ export default function PokemonPage ({data, setPokeDex,value,setValue}){
                 {
                             data.stats.map((poke,i)=>{
                                 return<div className="stat-group" key={i}>
-                            <span>{poke.stat.name}</span>
+                            <span className="stat_name">{poke.stat.name}</span>
                             <div className="progress-bar">
                             <div className="progress-bar-ch" style={{width:`${poke.base_stat}%`}}></div>
                             </div>
