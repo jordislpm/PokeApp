@@ -362,10 +362,8 @@ position: absolute;
 }
 
 .stat-group{
-    display: grid;
-  grid-template-columns: 3rem auto auto;
-  max-width: 90%;
-    /* display: flex;*/
+
+    display: flex;
     align-items: center;
     gap: 1rem; 
 }
