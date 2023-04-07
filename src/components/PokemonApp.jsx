@@ -36,7 +36,6 @@ function PokemonApp(){
 
 
     useEffect(()=>{
-        console.log(uniquePokemon)
         setPokeDex(uniquePokemon)
         
     },[uniquePokemon])
