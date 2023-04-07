@@ -33,14 +33,19 @@
 }
 
 body{
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
     margin: 0px;
     padding: 0px;
 }
 
 .pokeBody{
+    display: flex;
+    flex-direction: column;
     margin: 0px;
     padding: 0px;
-    min-width: 100%;
+    max-width: 100%;
     height: auto;
 
 }
