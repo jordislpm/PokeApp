@@ -83,23 +83,23 @@ body{
 }
 
 .card-list-normal{
- min-height: 85rem;
+ min-height: 20rem;
 }
 
 .card-list-busqueda{
-    min-height: 20rem
+    /* min-height: 20rem */
 
-   
+
 }
 .card-list-busqueda-5{
     height: 35rem;
     padding-bottom: 30rem;
-    
-   
+
+
 }
 
 .PokeList-Mobile{
-    display: flex;  
+    display: flex;
     padding: 0rem 3rem 0rem 3rem;
     flex-direction: column;
 }
@@ -111,7 +111,7 @@ body{
     color: var(--poke-yellow);
     min-width: 100%;
     height: 15rem;
-    border-radius: 11px; 
+    border-radius: 11px;
 }
 .card-pokemon{
     text-align: center;
@@ -151,7 +151,7 @@ body{
     100%{
         transform: translateY(0);
     }
-    
+
 }
 
 .card-type{
@@ -169,25 +169,25 @@ body{
     margin-bottom: 7px;
 }
 
-	
+
 .ghost{
-    background-color: var(--color-ghost)  
+    background-color: var(--color-ghost)
 }
 .fighting{
-    background-color: var(--color-fighting)  
+    background-color: var(--color-fighting)
 }
 
 .rock{
-    background-color: var(--color-rock)  
+    background-color: var(--color-rock)
 }
 .ice{
-    background-color: var(--color-ice)  
-}	
-	
+    background-color: var(--color-ice)
+}
+
 .psychic{
-    background-color: var(--color-psychic)  
-}	
-	
+    background-color: var(--color-psychic)
+}
+
 .fairy{
         background-color: var(--color-fairy)
 }
@@ -247,7 +247,7 @@ position: absolute;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-    
+
 }
 
 .pokemon-page-button:hover{
@@ -382,9 +382,9 @@ position: absolute;
     transition: var(--transition);
     height: 20px;
     border-radius: 10px;
-    
-    
-    
+
+
+
 }
 
 /* loader */
@@ -399,7 +399,7 @@ position: absolute;
 /* btn previous and next*/
 .btn-group{
     display: flex;
-    
+
 }
 .btn-group button{
     outline: none;
