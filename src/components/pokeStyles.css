@@ -365,9 +365,9 @@ position: absolute;
     display: grid;
   grid-template-columns: 10% auto auto;
   max-width: 90%;
-    /* display: flex;
+    /* display: flex;*/
     align-items: center;
-    gap: 20px; */
+    gap: 2rem; 
 }
 
 .stat-group span{
