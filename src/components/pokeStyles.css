@@ -355,7 +355,7 @@ position: absolute;
 
 .stats{
     display: flex;
-    max-width: 70%;
+    max-width: 90%;
     flex-direction: column;
     gap: 20px;
     flex: 1;
