@@ -261,6 +261,7 @@ position: absolute;
     display: flex;
     flex-direction: column;
     background-color: rgba(42, 117, 187, 0.95);
+    max-width: 100%;
 }
 
 .main-pokemon-closed{
