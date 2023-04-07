@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 
 
-export default function PokeCard ({id,name,img,types,infoPokemon,pk}){
+export default function PokeCard ({id,name,img,types,infoPokemon,pk,toggleModal}){
 
 	const [cardMobile, setMobileCard] = useState("card-pokemon")
 
@@ -27,7 +27,8 @@ export default function PokeCard ({id,name,img,types,infoPokemon,pk}){
             <button
 				className={`${cardMobile}`}
                 key={id} 
-                onClick={()=>infoPokemon(pk)}
+                onClick={()=>{
+					infoPokemon(pk)}}
 			>
 				<div className="card-info">
 					<span className="pokemon-id">No.{id}</span>
