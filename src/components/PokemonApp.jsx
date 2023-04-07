@@ -203,12 +203,11 @@ function PokemonApp(){
         clearSearch={clearSearch}
         clear={clear}
         />
-        {modal && pokemonData.length > 19 ? <div className="div-reyeno"></div>: <PokemonList 
+        {modal ? <div className="div-reyeno"></div>: <PokemonList 
         pokemonData={pokemonData} 
         cardListStyle={cardListStyle}
         loading={loading} 
         infoPokemon={poke=>{
-            //setPokeDex(poke)
          toggleModal()
          getUniqueData(poke.id)}
         } 

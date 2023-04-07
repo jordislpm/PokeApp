@@ -19,7 +19,9 @@ export default function PokemonPage ({data, setPokeDex,value,setValue}){
             setValue={setValue}
             />
             <main id="pokemonPage" className="container main-pokemon">
-                <button className="pokemon-page-button" onClick={setPokeDex}>
+                <button className="pokemon-page-button" onClick={()=>{
+                    setPokeDex("")
+                    setValue(null)}}>
                     <span>X</span>
                 </button>
 			<div className="header-main-pokemon">
