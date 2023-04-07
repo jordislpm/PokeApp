@@ -278,10 +278,8 @@ position: absolute;
 
 .header-main-pokemon{
     margin-top: 20px;
-
     display: flex;
     align-items: center;
-
     position: relative;
 }
 
@@ -337,6 +335,7 @@ position: absolute;
 /* Stats */
 .container-stats{
     display: flex;
+    max-width: 100%;
     display: grid;
     grid-template-columns: repeat(
         auto-fit,
