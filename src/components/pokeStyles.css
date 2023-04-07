@@ -350,6 +350,7 @@ position: absolute;
 
 .stats{
     display: flex;
+    max-width: 80%;
     flex-direction: column;
     gap: 20px;
     flex: 1;
