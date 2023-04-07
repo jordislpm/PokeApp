@@ -355,16 +355,18 @@ position: absolute;
 
 .stats{
     display: flex;
-    max-width: 90%;
+    max-width: 80%;
     flex-direction: column;
     gap: 20px;
     flex: 1;
 }
 
 .stat-group{
-    display: flex;
+    display: grid;
+  grid-template-columns: 10% 70% 10%;
+    /* display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 20px; */
 }
 
 .stat-group span{
