@@ -355,7 +355,7 @@ position: absolute;
 
 .stats{
     display: flex;
-    max-width: 90%;
+    max-width: 80%;
     flex-direction: column;
     gap: 20px;
     flex: 1;
@@ -363,7 +363,7 @@ position: absolute;
 
 .stat-group{
     display: grid;
-    grid-template-columns: 10% auto auto;
+    grid-template-columns: 10% 50% 10%;
     align-items: center;
     gap: 20px;
 }
