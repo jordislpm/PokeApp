@@ -73,12 +73,10 @@ function PokemonApp(){
         if(e.target.value != ""){
             setBusqueda(true)
             setFind(e.target.value.trim())
-            console.log("pepe")
         }else if(e.target.value == ""){
             setBusqueda(false)
             setFind(e.target.value.trim())
             setUrl(`https://pokeapi.co/api/v2/pokemon?limit=${page20}&offset=0`)
-            console.log("pepa")
         }
       };
 
