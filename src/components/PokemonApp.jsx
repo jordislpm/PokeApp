@@ -6,8 +6,13 @@ import axios from "axios";
 import PokemonPage from "./PokemonPage";
 import DontFind from "./DontFind";
 import Footer from "./Footer";
-import useGetPokemon from "../services/useGetPokemon.mjs";
+import Loading from "./Loading";
 
+
+
+//funtions data
+import useGetPokemon from "../services/useGetPokemon.mjs";
+import useAllPokemons from "../services/useAllPokemons.mjs";
 
 
 
@@ -15,182 +20,202 @@ import useGetPokemon from "../services/useGetPokemon.mjs";
 
 
 function PokemonApp(){
+    //variables
     const [value, setValue] = useState(null)
     const [uniquePokemon, setUniquePokemon]= useGetPokemon(value)
+    const page20 = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`;
+    const allpage= `https://pokeapi.co/api/v2/pokemon?limit=905&offset=0`;
+    const [cardListStyle, setCardListStyle] = useState(`card-list-normal`)
+    const[pokemonData, setPokemonData] = useState([]);
+    const[pokeDex,setPokeDex]=useState();
+    const[url,setUrl]= useState(page20)
+    const[loading,setLoading]=useState(false)
+    const [modal, setModal] = useState(false);
+    const[fondo, setFondo] = useState("https://wallpaper.dog/large/749981.jpg")
+    const [busqueda, setBusqueda] = useState(false)
+    const [find, setFind] = useState("");
+    const[clear, setClear]= useState(false)
+    const [search, setSearch] = useState(false)
+    const [img, setImg] = useState([])
+    const [findit,setFindit] = useState(true)
+    const [pages, setPages] = useState(20)
+    const [pokemonsData, setPokemonsData,nextUrl,prevUrl,ready,setReady] = useAllPokemons(url,search,find)
+    // end variables
 
+
+    // start funtions
+    
     function getUniqueData(valor){
-         setValue(valor)
-        
-    }
-
-    function nextUniqueData(valor){
-        setValue(valor+1)
+        setValue(valor)
        
    }
 
-   function prevUniqueData(valor){
-    setValue(valor-1)
-   
+   function nextUniqueData(valor){
+       setValue(valor+1)
+      
+  }
+
+  function prevUniqueData(valor){
+   setValue(valor-1)
+  
+}
+
+function handleFind(e){
+        
+
+    if(e.target.value == ""){
+        setBusqueda(false)
+        setFind(e.target.value.trim())
+        setUrl(page20)
+        setSearch(false)
+    }
+    else  if(e.target.value != ""){
+        setBusqueda(true)
+        setFind(e.target.value.trim())
+    }
+  };
+
+
+function submitFind(e){
+    
+    e.preventDefault()
+    setLoading(true)
+    if(busqueda == false){
+        alert("debes escribir algo para hacer la busqueda")
+        // setUrl(`https://pokeapi.co/api/v2/pokemon?limit=${page20}&offset=0`)
+        // setPokemonData([])
+        //loadData()
+       // setClear(true)
+    }else if (busqueda ==true){
+        
+        
+        setUrl(allpage)
+        //setPokemonData(pokemonsData)
+        
+        //console.log(pokemonData)
+        setSearch(true)
+        setClear(true)
+        setBusqueda(false)
+        
+    }
+
 }
 
 
 
+
+function toggleModal(){
+setModal(!modal);
+};
+
+function clearSearch (){
+        
+    setFind("");
+    setBusqueda(false);
+    setSearch(false)
+    setUrl(page20)
+    //setPokemonData(pokemonsData);
+   setClear(false)
+   setReady(false)
+   console.log(url)
+
+//    if(!findit){
+//     setUrl(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`)
+//     console.log(`clearSearch empty`)
+//    }
+}
+
+// end funtions
+
+// start effects
+
+   useEffect(()=>{
+       setPokeDex(uniquePokemon)
+       
+   },[uniquePokemon])
+
     useEffect(()=>{
-        setPokeDex(uniquePokemon)
-        
-    },[uniquePokemon])
 
-    const [img, setImg] = useState([
-        {
-          url:"https://wallpaper.dog/large/749981.jpg"
-        },
-        {
-          url: "https://wallpaper.dog/large/20352460.jpg"
-        },
-        {
-            url: "https://wallpapers.com/images/hd/pikachu-with-pokemon-friends-uxxa8pvbvsqj0v3h.jpg"
-          }
-      ])
-        const page20 = 20;
-        const allpage= 905;
-        const [cardListStyle, setCardListStyle] = useState(`card-list-normal`)
+setPokemonData(pokemonsData)
+setFind("")
+
+if(pokemonsData.length < 20 && pokemonsData.length > 10){
+    setCardListStyle()
+}
+
+console.log("activado")
+
+    },[pokemonsData])
+
     
-      
-    const[pokemonData, setPokemonData] = useState([]);
-    const[pokeDex,setPokeDex]=useState();
-    const[url,setUrl]= useState(`https://pokeapi.co/api/v2/pokemon?limit=${page20}&offset=0`)
-    const[nextUrl,setNextUrl]=useState()
-    const[prevUrl,setPrevUrl]=useState()
-    const[loading,setLoading]=useState(true)
-    const [modal, setModal] = useState(false);
-    const[fondo, setFondo] = useState(img[0].url)
-    const [busqueda, setBusqueda] = useState(false)
-    const [find, setFind] = useState("");
-    const[clear, setClear]= useState(false)
 
-    function handleFind(e){
-        
-        if(e.target.value != ""){
-            setBusqueda(true)
-            setFind(e.target.value.trim())
-        }else if(e.target.value == ""){
-            setBusqueda(false)
-            setFind(e.target.value.trim())
-            setUrl(`https://pokeapi.co/api/v2/pokemon?limit=${page20}&offset=0`)
+
+    //end new data
+
+ 
+
+
+   
+// useEffect(()=>{
+//     if(ready){
+//         setLoading(false)
+//        }
+    
+//     console.log(`ready:${ready}`)
+// },[ready])
+
+useEffect(()=>{
+   
+   if (ready){
+        if(pokemonData.length <= 0){
+            setFindit(false)
+            setLoading(false)
+        } else if(pokemonData.length >= 1){
+            setFindit(true)
+            setLoading(false)  
         }
-      };
-
-
-    function submitFind(e){
-        e.preventDefault()
-        if(busqueda == false){
-            alert("debes escribir algo para hacer la busqueda")
-            setUrl(`https://pokeapi.co/api/v2/pokemon?limit=${page20}&offset=0`)
-            setPokemonData([])
-            loadData()
-            setClear(true)
-        }else if (busqueda ==true){
-            setUrl(`https://pokeapi.co/api/v2/pokemon?limit=${allpage}&offset=0`)
-            loadAllData()
-            setClear(true)
-            if(pokemonData.length < 20 && pokemonData.length > 10){
-                setCardListStyle()
-            }
-        }
-
     }
+},[pokemonData])
+
+
+// useEffect(()=>{
+//    if(ready){
+//     setLoading(false)
+//    }
+
+
+// },[loading])
 
 
 
 
-  function toggleModal(){
-    setModal(!modal);
-  };
-
-  async function loadData(){
-
-        const resp = await axios.get(`${url}`);
-                setNextUrl(resp.data.next)
-                setPrevUrl(resp.data.previous)
-                getPokemon(resp.data.results)
-                setLoading(false)
-    }
-
-    async function getPokemon(res){
-        res.map(async(item)=>{
-            const result = await axios.get(item.url)
-                setPokemonData(state=>{
-                    let hash = {};
-                    state=[...state,result.data]
-                    state.sort((a,b)=>a.id>b.id?1:-1)
-                    state = state.filter(o => hash[o.id] ? false : hash[o.id] = true);
-                    return state
-                })
-
-        })
-    }
-
+    // useLayoutEffect(()=>{
     
-
-    async function loadAllData (){
-        const resp = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${allpage}&offset=0`);
-                
-        getAllPokemon(resp.data.results)     
-    }
-
-    async function getAllPokemon(res){
-        res.map(async(item)=>{
-            const result = await axios.get(item.url)
-            setPokemonData(state=>{
-                let hash = {};
-                state=[...state,result.data]
-                state = state.filter(o => hash[o.id] ? false : hash[o.id] = true);
-                state = state.filter(pokemon=>{
-                    if(pokemon.name.includes(find.toLowerCase())){
-
-                        return pokemon
-                    }else if(pokemon.id == (Math.floor(find))){
-                        return pokemon
-                    }
-                    
-                })
-                return state
-            })
-           
-        })
-    }
-
-    function clearSearch (){
-        
-            setFind("");
-            setBusqueda(false);
-            setUrl(`https://pokeapi.co/api/v2/pokemon?limit=${page20}&offset=0`);
-            setPokemonData([]);
-            setClear(false)
-    }
-
-    function backgroundChange(){
-        const backGround = document.getElementById("pokeBody")
-            const num = img[Math.floor(Math.random()*img.length)]
-            setFondo(num.url)
-    }
-
-
-    useLayoutEffect(()=>{
-    
-        if(busqueda == false){
-        setPokemonData([])
-        loadData();
+    //     if(busqueda == false){
+    //     setPokemonData(pokemonsData)
+    //     //loadData();
 
        
        
-        } else if(busqueda == true){
-            loadAllData();
+    //     } else if(busqueda == true){
+    //         //loadAllData();
+    //         setPokemonData(pokemonsData)
             
-           
-            }
-    },[url])
-    
+    //         }
+            
+
+    // },[url])
+
+ 
+    useEffect(()=>{
+        if(pokemonData <= 0){
+
+        }
+
+    },[pokemonData])
+
+    // end effects
+
     return(
         
         <div id="pokeBody" className="pokeBody" style={{ background: `url(${fondo})`}}>
@@ -202,7 +227,13 @@ function PokemonApp(){
         clearSearch={clearSearch}
         clear={clear}
         />
-        {modal ? <div className="div-reyeno"></div>: <PokemonList 
+{/* Start list */}
+        {!modal ? <>
+
+
+
+{loading ?  <Loading/> : <>
+      { findit && <PokemonList 
         pokemonData={pokemonData} 
         cardListStyle={cardListStyle}
         loading={loading} 
@@ -215,9 +246,14 @@ function PokemonApp(){
         prevUrl={prevUrl}
         nextUrl={nextUrl}
         setPokemonData={setPokemonData}
-        busqueda={busqueda}/>}
-{pokemonData.length <= 0 && busqueda ? <DontFind/> : ""}
-        {modal && <PokemonPage data={pokeDex} setPokeDex={()=>{
+        search={search}/>
+        }
+        {!findit && ready ? <DontFind/> : <></>}
+           
+</>}
+
+        </>: 
+        <PokemonPage data={pokeDex} setPokeDex={()=>{
             setPokeDex("")
             toggleModal()}}
             prevUrl={setPokeDex}
@@ -229,6 +265,7 @@ function PokemonApp(){
             value={value}
             setValue={setValue}
             />}
+{/* End list */}
         <Footer/>
         </div>
         
