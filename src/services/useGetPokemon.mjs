@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState} from "react";
 
 function useGetPokemon(unique) {
-  const [onePokemon, setOnePokemon] = useState();
+  const [onePokemon, setOnePokemon] = useState(null);
   const [error, setError] = useState(null);
   useEffect(()=>{
     const fetchData = async () => {

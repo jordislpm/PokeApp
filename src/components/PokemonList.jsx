@@ -5,7 +5,7 @@ import PokeButton from "./PokeButton"
 
 
 
-export default function PokemonList({cardListStyle, busqueda, setPokemonData, pokemonData, loading, infoPokemon, setUrl, nextUrl, prevUrl}) {
+export default function PokemonList({cardListStyle, search, setPokemonData, pokemonData, loading, infoPokemon, setUrl, nextUrl, prevUrl}) {
     
     const [listMobile, setListMobile] = useState("PokeList")
 
@@ -29,7 +29,7 @@ export default function PokemonList({cardListStyle, busqueda, setPokemonData, po
 
     return(
         <div className={`${listMobile} ${cardListStyle}`}>
-        {!busqueda && <PokeButton
+        {!search && <PokeButton
             prevUrl={prevUrl}
             nextUrl={nextUrl}
             setPokemonData={setPokemonData}
@@ -50,7 +50,7 @@ export default function PokemonList({cardListStyle, busqueda, setPokemonData, po
         
             })}
         </div>
-        {!busqueda && <PokeButton
+        {!search && <PokeButton
             prevUrl={prevUrl}
             nextUrl={nextUrl}
             setPokemonData={setPokemonData}
