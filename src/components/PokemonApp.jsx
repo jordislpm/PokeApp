@@ -2,7 +2,6 @@ import { useState, useEffect , useLayoutEffect} from "react"
 import "./pokeStyles.css"
 import PokemonList from "./PokemonList";
 import PokeHeader from "./PokeHeader";
-import axios from "axios";
 import PokemonPage from "./PokemonPage";
 import DontFind from "./DontFind";
 import Footer from "./Footer";
@@ -20,7 +19,7 @@ import useAllPokemons from "../services/useAllPokemons.mjs";
 
 
 function PokemonApp(){
-    //variables
+//states
     const [value, setValue] = useState(null)
     const [uniquePokemon, setUniquePokemon]= useGetPokemon(value)
     const page20 = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`;
@@ -36,14 +35,12 @@ function PokemonApp(){
     const [find, setFind] = useState("");
     const[clear, setClear]= useState(false)
     const [search, setSearch] = useState(false)
-    const [img, setImg] = useState([])
     const [findit,setFindit] = useState(true)
-    const [pages, setPages] = useState(20)
     const [pokemonsData, setPokemonsData,nextUrl,prevUrl,ready,setReady] = useAllPokemons(url,search,find)
-    // end variables
+// end states
 
 
-    // start funtions
+// start funtions
     
     function getUniqueData(valor){
         setValue(valor)
@@ -82,17 +79,10 @@ function submitFind(e){
     setLoading(true)
     if(busqueda == false){
         alert("debes escribir algo para hacer la busqueda")
-        // setUrl(`https://pokeapi.co/api/v2/pokemon?limit=${page20}&offset=0`)
-        // setPokemonData([])
-        //loadData()
-       // setClear(true)
     }else if (busqueda ==true){
         
         
         setUrl(allpage)
-        //setPokemonData(pokemonsData)
-        
-        //console.log(pokemonData)
         setSearch(true)
         setClear(true)
         setBusqueda(false)
@@ -109,32 +99,34 @@ setModal(!modal);
 };
 
 function clearSearch (){
-        
+    setUrl(page20)  
     setFind("");
     setBusqueda(false);
     setSearch(false)
-    setUrl(page20)
-    //setPokemonData(pokemonsData);
+    
    setClear(false)
    setReady(false)
    console.log(url)
+   console.log(pokemonData)
 
-//    if(!findit){
-//     setUrl(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`)
-//     console.log(`clearSearch empty`)
-//    }
+
 }
+
+useEffect(()=>{
+console.log(`url es:${url}`)
+
+},[url])
 
 // end funtions
 
 // start effects
 
-   useEffect(()=>{
+useEffect(()=>{
        setPokeDex(uniquePokemon)
        
    },[uniquePokemon])
 
-    useEffect(()=>{
+useEffect(()=>{
 
 setPokemonData(pokemonsData)
 setFind("")
@@ -147,74 +139,24 @@ console.log("activado")
 
     },[pokemonsData])
 
-    
-
-
-    //end new data
-
- 
-
-
-   
-// useEffect(()=>{
-//     if(ready){
-//         setLoading(false)
-//        }
-    
-//     console.log(`ready:${ready}`)
-// },[ready])
 
 useEffect(()=>{
    
-   if (ready){
-        if(pokemonData.length <= 0){
+   if (ready ){
+
+        if(pokemonData.length >= 1){
+            setFindit(true) 
+        }
+        else if(pokemonData.length <= 0){
             setFindit(false)
-            setLoading(false)
-        } else if(pokemonData.length >= 1){
-            setFindit(true)
-            setLoading(false)  
-        }
+
+        }  
+        setLoading(false)   
     }
-},[pokemonData])
+},[pokemonData,ready])
 
 
-// useEffect(()=>{
-//    if(ready){
-//     setLoading(false)
-//    }
-
-
-// },[loading])
-
-
-
-
-    // useLayoutEffect(()=>{
-    
-    //     if(busqueda == false){
-    //     setPokemonData(pokemonsData)
-    //     //loadData();
-
-       
-       
-    //     } else if(busqueda == true){
-    //         //loadAllData();
-    //         setPokemonData(pokemonsData)
-            
-    //         }
-            
-
-    // },[url])
-
- 
-    useEffect(()=>{
-        if(pokemonData <= 0){
-
-        }
-
-    },[pokemonData])
-
-    // end effects
+// end effects
 
     return(
         
@@ -227,7 +169,6 @@ useEffect(()=>{
         clearSearch={clearSearch}
         clear={clear}
         />
-{/* Start list */}
         {!modal ? <>
 
 
@@ -265,7 +206,6 @@ useEffect(()=>{
             value={value}
             setValue={setValue}
             />}
-{/* End list */}
         <Footer/>
         </div>
         
