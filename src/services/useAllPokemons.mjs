@@ -9,44 +9,8 @@ import axios from "axios";
   
     
     useEffect(()=>{
-        if(search){
-            async function loadAllDataSearch (){
-                const resp = await axios.get(url)
-                getAllPokemonSearch(resp.data.results);
-            }
         
-            async function getAllPokemonSearch(res){
-                setData([])
-                res.map(async(item)=>{
-                    const result = await axios.get(item.url)
-                    setData(state=>{
-                        let hash = {};
-                        state=[...state,result.data]
-                        state = state.filter(o => hash[o.id] ? false : hash[o.id] = true);
-                        state = state.filter(pokemon=>{
-                            if(pokemon.name.includes(find.toLowerCase())){
         
-                                return pokemon
-                            }else if(pokemon.id == (Math.floor(find))){
-                                return pokemon
-                            }
-                            
-                        })
-                        return state
-                    })
-                   
-                })
-                
-            }
-        
-    
-            loadAllDataSearch()
-            setReady(true)
-
-
-
-        } else{
-
         async function loadAllData (){
             const resp = await axios.get(url)
              getPokemon(resp.data.results);
@@ -71,8 +35,43 @@ import axios from "axios";
     
 
         loadAllData()
-    }
-    },[url,search])
+     
+    },[url])
+
+    useEffect(()=>{
+        async function loadAllDataSearch (){
+            const resp = await axios.get(url)
+            getAllPokemonSearch(resp.data.results);
+        }
+    
+        async function getAllPokemonSearch(res){
+            setData([])
+            res.map(async(item)=>{
+                const result = await axios.get(item.url)
+                setData(state=>{
+                    let hash = {};
+                    state=[...state,result.data]
+                    state = state.filter(o => hash[o.id] ? false : hash[o.id] = true);
+                    state = state.filter(pokemon=>{
+                        if(pokemon.name.includes(find.toLowerCase())){
+    
+                            return pokemon
+                        }else if(pokemon.id == (Math.floor(find))){
+                            return pokemon
+                        }
+                        
+                    })
+                    return state
+                })
+               
+            })
+            
+        }
+    
+
+        loadAllDataSearch()
+        setReady(true)
+    },[search])
 
     return [data, setData,nextUrl,prevUrl,ready,setReady];
 }
