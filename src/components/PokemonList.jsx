@@ -48,6 +48,8 @@ export default function PokemonList({
         onPrev={onPrev}
         hasNext={hasNext}
         hasPrev={hasPrev}
+        selectedType={selectedType}
+        search={search}
       />
       <div className={`card-list-pokemon container ${cardListStyle}`}>
         {loading ? (
@@ -81,6 +83,8 @@ export default function PokemonList({
         onPrev={onPrev}
         hasNext={hasNext}
         hasPrev={hasPrev}
+        selectedType={selectedType}
+        search={search}
       />
     </div>
   );

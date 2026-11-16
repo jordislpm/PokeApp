@@ -101,7 +101,7 @@ export default function PokemonPage({
               {data.stats &&
                 data.stats.map((poke, i) => {
                   const statPercentage = Math.min(
-                    Math.round((poke.base_stat / 200) * 100),
+                    Math.max(poke.base_stat, 0),
                     100
                   );
                   return (

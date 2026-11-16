@@ -167,6 +167,7 @@ function PokemonApp() {
                   infoPokemon={(poke) => {
                     toggleModal();
                     getUniqueData(poke.id);
+                    window.scrollTo({ top: 0, behavior: "instant" });
                   }}
                   pokeDex={pokeDex}
                   setUrl={setUrl}

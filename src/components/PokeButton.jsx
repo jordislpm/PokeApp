@@ -7,26 +7,37 @@ export default function PokeButton({
   onNext,
   hasPrev,
   hasNext,
+  selectedType = "all",
+  search = false,
 }) {
-  const canGoPrev = hasPrev !== undefined ? hasPrev : Boolean(prevUrl);
-  const canGoNext = hasNext !== undefined ? hasNext : Boolean(nextUrl);
+  const isCustomFilter = selectedType !== "all" || Boolean(search);
+
+  const canGoPrev = isCustomFilter
+    ? Boolean(hasPrev)
+    : Boolean(prevUrl);
+
+  const canGoNext = isCustomFilter
+    ? Boolean(hasNext)
+    : Boolean(nextUrl);
 
   const handlePrevClick = () => {
-    if (onPrev && hasPrev !== undefined) {
-      onPrev();
-    } else if (prevUrl) {
+    if (isCustomFilter) {
+      if (onPrev) onPrev();
+    } else if (prevUrl && setUrl) {
       if (setPokemonData) setPokemonData([]);
-      if (setUrl) setUrl(prevUrl);
+      setUrl(prevUrl);
     }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleNextClick = () => {
-    if (onNext && hasNext !== undefined) {
-      onNext();
-    } else if (nextUrl) {
+    if (isCustomFilter) {
+      if (onNext) onNext();
+    } else if (nextUrl && setUrl) {
       if (setPokemonData) setPokemonData([]);
-      if (setUrl) setUrl(nextUrl);
+      setUrl(nextUrl);
     }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (!canGoPrev && !canGoNext) return null;
