@@ -1,43 +1,47 @@
 import axios from "axios";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 function useGetPokemon(unique) {
   const [onePokemon, setOnePokemon] = useState(null);
   const [error, setError] = useState(null);
-  useEffect(()=>{
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!unique) {
+      setOnePokemon(null);
+      setError(null);
+      return;
+    }
+
+    let isMounted = true;
     const fetchData = async () => {
-      const response = await axios
-      .get(
-        `https://pokeapi.co/api/v2/pokemon/${unique}/`)
-      .then((response)=>{setOnePokemon(response.data)})
-      .catch((error) => {
-        if(error.response){
-          setError(error.response)
-          console.log(error)
-        } else if(error.request){
-          setError(error.request)
-          console.log(error)
-        }else {
-          setError(error.message)
-          console.log(error)
-
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${unique}/`);
+        if (isMounted) {
+          setOnePokemon(response.data);
         }
-        ;
-      });   
-     
+      } catch (err) {
+        if (isMounted) {
+          setError(err);
+          setOnePokemon(null);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
     };
+
     fetchData();
-  },
-  
-  [unique])
-  if (!error){
-    console.log(error)
-    return [error, setError];
-  } else if (error){
-    return [onePokemon,setOnePokemon];
-  }
 
-    
-  }
+    return () => {
+      isMounted = false;
+    };
+  }, [unique]);
 
-  export default useGetPokemon;
+  return [onePokemon, setOnePokemon, loading, error];
+}
+
+export default useGetPokemon;

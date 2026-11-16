@@ -1,219 +1,212 @@
-import { useState, useEffect , useLayoutEffect} from "react"
-import "./pokeStyles.css"
+import { useState, useEffect } from "react";
+import "./pokeStyles.css";
 import PokemonList from "./PokemonList";
 import PokeHeader from "./PokeHeader";
+import PokeFilter from "./PokeFilter";
 import PokemonPage from "./PokemonPage";
 import DontFind from "./DontFind";
 import Footer from "./Footer";
 import Loading from "./Loading";
 
-
-
-//funtions data
+// functions data
 import useGetPokemon from "../services/useGetPokemon.mjs";
 import useAllPokemons from "../services/useAllPokemons.mjs";
 
+function PokemonApp() {
+  // states
+  const [value, setValue] = useState(null);
+  const [uniquePokemon, setUniquePokemon, uniqueLoading] = useGetPokemon(value);
+  const page20 = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`;
+  const [cardListStyle, setCardListStyle] = useState(`card-list-normal`);
+  const [pokemonData, setPokemonData] = useState([]);
+  const [pokeDex, setPokeDex] = useState(null);
+  const [url, setUrl] = useState(page20);
+  const [modal, setModal] = useState(false);
+  const [fondo] = useState("https://wallpaper.dog/large/749981.jpg");
+  const [busqueda, setBusqueda] = useState(false);
+  const [find, setFind] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedType, setSelectedType] = useState("all");
+  const [clear, setClear] = useState(false);
+  const [search, setSearch] = useState(false);
+  const [findit, setFindit] = useState(true);
 
+  const [
+    pokemonsData,
+    setPokemonsData,
+    nextUrl,
+    prevUrl,
+    ready,
+    setReady,
+    dataLoading,
+    onNextPage,
+    onPrevPage,
+    hasNextPage,
+    hasPrevPage,
+  ] = useAllPokemons(url, search, searchTerm, selectedType);
 
+  // Sync unique Pokemon details into pokeDex
+  useEffect(() => {
+    if (uniquePokemon) {
+      setPokeDex(uniquePokemon);
+    }
+  }, [uniquePokemon]);
 
+  // Sync list data into pokemonData
+  useEffect(() => {
+    setPokemonData(pokemonsData);
+    if (pokemonsData.length < 20 && pokemonsData.length > 0) {
+      setCardListStyle("card-list-busqueda");
+    } else {
+      setCardListStyle("card-list-normal");
+    }
+  }, [pokemonsData]);
 
+  // Evaluate if search/filter produced results or empty
+  useEffect(() => {
+    if (ready && !dataLoading) {
+      if (pokemonData.length >= 1) {
+        setFindit(true);
+      } else {
+        setFindit(false);
+      }
+    }
+  }, [pokemonData, ready, dataLoading]);
 
-function PokemonApp(){
-//states
-    const [value, setValue] = useState(null)
-    const [uniquePokemon, setUniquePokemon]= useGetPokemon(value)
-    const page20 = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`;
-    const allpage= `https://pokeapi.co/api/v2/pokemon?limit=905&offset=0`;
-    const [cardListStyle, setCardListStyle] = useState(`card-list-normal`)
-    const[pokemonData, setPokemonData] = useState([]);
-    const[pokeDex,setPokeDex]=useState();
-    const[url,setUrl]= useState(page20)
-    const[loading,setLoading]=useState(false)
-    const [modal, setModal] = useState(false);
-    const[fondo, setFondo] = useState("https://wallpaper.dog/large/749981.jpg")
-    const [busqueda, setBusqueda] = useState(false)
-    const [find, setFind] = useState("");
-    const[clear, setClear]= useState(false)
-    const [search, setSearch] = useState(false)
-    const [findit,setFindit] = useState(true)
-    const [pokemonsData, setPokemonsData,nextUrl,prevUrl,ready,setReady] = useAllPokemons(url,search,find)
-// end states
-
-
-// start funtions
-    
-    function getUniqueData(valor){
-        setValue(valor)
-       
-   }
-
-   function nextUniqueData(valor){
-       setValue(valor+1)
-      
+  // Handlers
+  function getUniqueData(valor) {
+    setValue(valor);
   }
 
-  function prevUniqueData(valor){
-   setValue(valor-1)
-  
-}
-
-function handleFind(e){
-        
-
-    if(e.target.value == ""){
-        setBusqueda(false)
-        setFind(e.target.value.trim())
-        setUrl(page20)
-        setSearch(false)
+  function nextUniqueData() {
+    if (value && value < 1025) {
+      setValue(value + 1);
     }
-    else  if(e.target.value != ""){
-        setBusqueda(true)
-        setFind(e.target.value.trim())
+  }
+
+  function prevUniqueData() {
+    if (value && value > 1) {
+      setValue(value - 1);
     }
-  };
+  }
 
-
-function submitFind(e){
-    
-    e.preventDefault()
-    setLoading(true)
-    if(busqueda == false){
-        alert("debes escribir algo para hacer la busqueda")
-    }else if (busqueda ==true){
-        
-        
-        setUrl(allpage)
-        setSearch(true)
-        setClear(true)
-        setBusqueda(false)
-        
+  function handleFind(e) {
+    const val = e.target.value;
+    setFind(val);
+    if (val === "") {
+      setBusqueda(false);
+      if (search) {
+        clearSearch();
+      }
+    } else {
+      setBusqueda(true);
     }
+  }
 
-}
-
-
-
-
-function toggleModal(){
-setModal(!modal);
-};
-
-function clearSearch (){
-    setUrl(page20)  
-    setFind("");
+  function submitFind(e) {
+    e.preventDefault();
+    const query = find.trim();
+    if (!query) {
+      alert("Debes escribir algo para hacer la búsqueda");
+      return;
+    }
+    setSearchTerm(query);
+    setSearch(true);
+    setClear(true);
     setBusqueda(false);
-    setSearch(false)
-    
-   setClear(false)
-   setReady(false)
-   console.log(url)
-   console.log(pokemonData)
+  }
 
+  function toggleModal() {
+    setModal(!modal);
+  }
 
-}
+  function clearSearch() {
+    setFind("");
+    setSearchTerm("");
+    setBusqueda(false);
+    setSearch(false);
+    setSelectedType("all");
+    setClear(false);
+    setUrl(page20);
+    setReady(false);
+  }
 
-useEffect(()=>{
-console.log(`url es:${url}`)
-
-},[url])
-
-// end funtions
-
-// start effects
-
-useEffect(()=>{
-       setPokeDex(uniquePokemon)
-       
-   },[uniquePokemon])
-
-useEffect(()=>{
-
-setPokemonData(pokemonsData)
-setFind("")
-
-if(pokemonsData.length < 20 && pokemonsData.length > 10){
-    setCardListStyle()
-}
-
-console.log("activado")
-
-    },[pokemonsData])
-
-
-useEffect(()=>{
-   
-   if (ready ){
-
-        if(pokemonData.length >= 1){
-            setFindit(true) 
-        }
-        else if(pokemonData.length <= 0){
-            setFindit(false)
-
-        }  
-        setLoading(false)   
-    }
-},[pokemonData,ready])
-
-
-// end effects
-
-    return(
-        
-        <div id="pokeBody" className="pokeBody" style={{ background: `url(${fondo})`}}>
-        <PokeHeader 
+  return (
+    <div
+      id="pokeBody"
+      className="pokeBody"
+      style={{ background: `url(${fondo})` }}
+    >
+      <PokeHeader
         handleFind={handleFind}
         submitFind={submitFind}
         find={find}
         busqueda={busqueda}
         clearSearch={clearSearch}
         clear={clear}
+      />
+
+      {!modal && (
+        <PokeFilter
+          selectedType={selectedType}
+          setSelectedType={setSelectedType}
         />
-        {!modal ? <>
+      )}
 
-
-
-{loading ?  <Loading/> : <>
-      { findit && <PokemonList 
-        pokemonData={pokemonData} 
-        cardListStyle={cardListStyle}
-        loading={loading} 
-        infoPokemon={poke=>{
-         toggleModal()
-         getUniqueData(poke.id)}
-        } 
-        pokeDex={pokeDex}
-        setUrl={setUrl}
-        prevUrl={prevUrl}
-        nextUrl={nextUrl}
-        setPokemonData={setPokemonData}
-        search={search}/>
-        }
-        {!findit && ready ? <DontFind/> : <></>}
-           
-</>}
-
-        </>: 
-        <PokemonPage data={pokeDex} setPokeDex={()=>{
-            setPokeDex("")
-            toggleModal()}}
-            prevUrl={setPokeDex}
-            nextUrl={setPokeDex}
-            setPokemonData={setPokemonData}
-            setUrl={setUrl}
-            nextUniqueData={nextUniqueData}
-            prevUniqueData={prevUniqueData}
-            value={value}
-            setValue={setValue}
-            />}
-        <Footer/>
-        </div>
-        
-    )
+      {!modal ? (
+        <>
+          {dataLoading ? (
+            <Loading />
+          ) : (
+            <>
+              {findit && (
+                <PokemonList
+                  pokemonData={pokemonData}
+                  cardListStyle={cardListStyle}
+                  loading={dataLoading}
+                  infoPokemon={(poke) => {
+                    toggleModal();
+                    getUniqueData(poke.id);
+                  }}
+                  pokeDex={pokeDex}
+                  setUrl={setUrl}
+                  prevUrl={prevUrl}
+                  nextUrl={nextUrl}
+                  setPokemonData={setPokemonData}
+                  search={search}
+                  selectedType={selectedType}
+                  onNext={onNextPage}
+                  onPrev={onPrevPage}
+                  hasNext={hasNextPage}
+                  hasPrev={hasPrevPage}
+                />
+              )}
+              {!findit && ready && <DontFind />}
+            </>
+          )}
+        </>
+      ) : (
+        <PokemonPage
+          data={pokeDex}
+          loading={uniqueLoading}
+          setPokeDex={() => {
+            setPokeDex(null);
+            setValue(null);
+            toggleModal();
+          }}
+          prevUrl={setPokeDex}
+          nextUrl={setPokeDex}
+          setPokemonData={setPokemonData}
+          setUrl={setUrl}
+          nextUniqueData={nextUniqueData}
+          prevUniqueData={prevUniqueData}
+          value={value}
+          setValue={setValue}
+        />
+      )}
+      <Footer />
+    </div>
+  );
 }
 
-
-
-export default PokemonApp
-
-
+export default PokemonApp;
