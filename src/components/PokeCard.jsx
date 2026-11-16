@@ -13,7 +13,6 @@ export default function PokeCard({ id, name, img, types, infoPokemon, pk }) {
       <div className="card-info">
         <span className="pokemon-id">No.{id}</span>
         <h3>{displayName}</h3>
-        <div className="card-types"></div>
       </div>
       <div className="card-img">
         <img
@@ -27,7 +26,7 @@ export default function PokeCard({ id, name, img, types, infoPokemon, pk }) {
           }}
         />
       </div>
-      <div>
+      <div className="card-types-container">
         {types &&
           types.map((type, i) => {
             const typeName = type.type.name;
@@ -35,7 +34,7 @@ export default function PokeCard({ id, name, img, types, infoPokemon, pk }) {
               typeName.charAt(0).toUpperCase() + typeName.slice(1);
             return (
               <span key={i} className={`card-type ${typeName}`}>
-                {displayTypeName}{" "}
+                {displayTypeName}
               </span>
             );
           })}
